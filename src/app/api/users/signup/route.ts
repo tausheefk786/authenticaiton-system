@@ -1,13 +1,15 @@
-import {connect} from "@/dbconfig/dbconfig.ts";
+import {connect} from "@/dbconfig/dbconfig";
 import User from  "@/models/userModel";
 import { NextRequest,NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+
+
 connect()
 
 export async function POST(request: NextRequest){
     try {
         const reqBody = await request.json()
-        const {username,emai,password}= reqBody
+        const {username,email,password}= reqBody
         console.log(reqBody);
 
         const user = await User.findOne({email})
@@ -16,8 +18,8 @@ export async function POST(request: NextRequest){
 
         }
 
-        const salt = await bcryptjs.genSalt(10)
-        const hashedpassword = await bcryptjs.hash(password,salt)
+        const salt = await bcrypt.genSalt(10)
+        const hashedpassword = await bcrypt.hash(password,salt)
 
         const newUser=new User({
             username,
@@ -26,9 +28,9 @@ export async function POST(request: NextRequest){
         })
 
 
-        User.findOne({email: email},async( error,user)=>{
+        // User.findOne({email: email},async( error,user)=>{
 
-        })
+        // })
     } catch (error: any) {
         return NextResponse.json({error: error.message},
             {status: 500})
