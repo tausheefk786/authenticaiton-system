@@ -9,7 +9,7 @@ connect()
 
 export async function POST(request: NextRequest){
     try {
-        const reqBody= request.json()
+        const reqBody= await request.json()
         const {email,password}= reqBody;
         console.log(reqBody);
 
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest){
             username: user.username,
             email: user.email
         }
-        const token = await jwt.sign(tokendata,process.env.TOKEN_SECRET!
+        const token = jwt.sign(tokendata,process.env.TOKEN_SECRET!
             ,{expiresIn : "1h"}
         )
         const response = NextResponse.json({
